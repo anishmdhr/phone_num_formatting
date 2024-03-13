@@ -38,11 +38,16 @@ def convert_to_international(num):
     else:
         return num
     
-for phone_num in phone_data['phone1']:
-    print(convert_to_international(phone_num))
-    
+# take each phone number and convert it to international format
+data['phone1_int'] = phone_data['phone1'].apply(convert_to_international)
+data['phone2_int'] = phone_data['phone2'].apply(convert_to_international)
 
-# data[['phone1_int','phone2_int']] = data[['phone1','phone2']].replace('0','+61', regex=True)
 
-#export dataframe to a new csv file
-# data.to_csv('phone_num_formatting\\sample\\au-500_int.csv', index=False)
+print(data.head())
+
+# export dataframe to a new csv file
+# Error:phone numbers beinng calculated as formula in excel file
+
+data.to_csv('phone_num_formatting\\sample\\au-500-int.csv', index=False)
+
+
