@@ -5,15 +5,16 @@
 # save it into new file/replace in existing file 
 
 import pandas as pd
-import numpy as np
 import os
 import re
 import csv
 
+# Set current working directory from current directory to phone_num_formatting
+os.chdir('phone_num_formatting')
 
 # load the data in a file
 
-data = pd.read_csv('phone_num_formatting\\sample\\au-500.csv')
+data = pd.read_csv('sample\\au-500.csv')
 
 phone_data  = data[["phone1","phone2"]]
 
@@ -37,17 +38,16 @@ data['phone2_intl'] = phone_data['phone2'].apply(check_format_and_convert)
 
 print(data.head())
 
-# print(type(data['phone1_intl'][0]))
 
 # save the modified data to a new CSV file
-print(os.getcwd())
-data.to_csv('formatted_phone_numbers.csv', index=False)
+
+data.to_csv('sample\\formatted_phone_numbers.csv', index=False)
 # Error: phone numbers being calculated as formula in excel file
 
-data.to_excel('phone_num_formatting\\sample\\au-500-intl.xlsx', index=False)
+data.to_excel('sample\\au-500-intl.xlsx', index=False)
 
 # export dataframe to a new csv file
-data.to_csv('phone_num_formatting\\sample\\au-500-intl.csv', index=False, quoting=csv.QUOTE_ALL)
+data.to_csv('sample\\au-500-intl.csv', index=False, quoting=csv.QUOTE_ALL)
 
 
 
