@@ -24,17 +24,24 @@ def check_format_and_convert(num):
         return None  # Invalid format, return None
 
 # take each phone number and convert it to international format
-data['phone1_intl'] = phone_data['phone1'].apply(check_format_and_convert)
-data['phone2_intl'] = phone_data['phone2'].apply(check_format_and_convert)
+phone_data['phone1_intl'] = phone_data['phone1'].apply(check_format_and_convert)
+phone_data['phone2_intl'] = phone_data['phone2'].apply(check_format_and_convert)
+
+
+# Merge only the (first 2 columns and email) in data and phone_data
+modified_data = pd.concat([data[['first_name', 'last_name', 'email']], phone_data], axis=1)
+
+
 
 # Drop rows only when both 'phone1_intl' and 'phone2_intl' are invalid
-data = data.dropna(subset=['phone1_intl', 'phone2_intl'], how='all')
+modified_data = modified_data.dropna(subset=['phone1_intl', 'phone2_intl'], how='all')
 
 # print(data.head())
 
-data.to_excel('sample\\au-500-intl.xlsx', index=False)
-
 # export dataframe to a new csv file
-# Error: phone numbers being calculated as formula in excel file
-data.to_csv('sample\\au-500-intl.csv', index=False)
+# Error: phone numbers being calculated as formula when csv file is opened in excel
+# However, the csv file itself is correct when opened in notepad
+modified_data.to_csv('sample\\au-500-intl.csv', index=False)
 
+# The error is not prevelant when exporting dataframe to an excel file  
+modified_data.to_excel('sample\\au-500-intl.xlsx', index=False)
