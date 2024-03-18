@@ -7,7 +7,7 @@ import csv
 os.chdir('phone_num_formatting')
 
 # load the data in a file
-data = pd.read_csv('sample\\au-500.csv')
+data = pd.read_csv('data_folder\\au-500.csv')
 
 # Extract the phone number columns
 phone_data  = data[["phone1","phone2"]]
@@ -41,7 +41,7 @@ modified_data = modified_data.dropna(subset=['phone1_intl', 'phone2_intl'], how=
 # export dataframe to a new csv file
 # Error: phone numbers being calculated as formula when csv file is opened in excel
 # However, the csv file itself is correct when opened in notepad
-modified_data.to_csv('sample\\au-500-intl.csv', index=False)
+modified_data.to_csv('data_folder\\au-500-intl.csv', index=False)
 
 # The error is not prevelant when exporting dataframe to an excel file  
-modified_data.to_excel('sample\\au-500-intl.xlsx', index=False)
+modified_data.to_excel('data_folder\\au-500-intl.xlsx', index=False)
