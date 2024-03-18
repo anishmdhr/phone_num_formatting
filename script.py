@@ -6,7 +6,10 @@
 
 import pandas as pd
 import numpy as np
+import os
 import re
+import csv
+
 
 # load the data in a file
 
@@ -14,40 +17,38 @@ data = pd.read_csv('phone_num_formatting\\sample\\au-500.csv')
 
 phone_data  = data[["phone1","phone2"]]
 
-phone1Regex = re.compile(r'0\d-\d\d\d\d-\d\d\d\d')
-phone2Regex = re.compile(r'0\d\d\d-\d\d\d-\d\d\d')
+# Regular expressions for checking phone number formats
+phone1Regex = re.compile(r'0\d{1}-\d{4}-\d{4}')  
+phone2Regex = re.compile(r'0\d{3}-\d{3}-\d{3}')
 
-for phone_num in phone_data["phone1"].head():
-    # Check if phone_num is in the phone1Regex format
-    if phone1Regex.search(phone_num):
-        print(f"Phone number: {phone_num} is in correct format")
-    else:
-        print(f"Phone number: {phone_num} is not in correct format")
 
-for phone_num in phone_data["phone2"].head():
-    # Check if phone_num is in the phone1Regex format
-    if phone2Regex.search(phone_num):
-        print(f"Phone number: {phone_num} is in correct format")
+def check_format_and_convert(num):
+    if re.match(phone1Regex, num):  # Using re.match instead of re.search
+        return "+61-" + num[1:]  # Convert to international format
+    elif re.match(phone2Regex, num):
+        return "+61-" + num[1:]  # Convert to international format
     else:
-        print(f"Phone number: {phone_num} is not in correct format")
+        return None  # Invalid format, return None
 
-# function to convert into international formatting
-def convert_to_international(num):
-    if num.startswith('0'):
-        return '+61-' + num[1:]
-    else:
-        return num
     
 # take each phone number and convert it to international format
-data['phone1_int'] = phone_data['phone1'].apply(convert_to_international)
-data['phone2_int'] = phone_data['phone2'].apply(convert_to_international)
-
+data['phone1_intl'] = phone_data['phone1'].apply(check_format_and_convert)
+data['phone2_intl'] = phone_data['phone2'].apply(check_format_and_convert)
 
 print(data.head())
 
-# export dataframe to a new csv file
-# Error:phone numbers beinng calculated as formula in excel file
+# print(type(data['phone1_intl'][0]))
 
-data.to_csv('phone_num_formatting\\sample\\au-500-int.csv', index=False)
+# save the modified data to a new CSV file
+print(os.getcwd())
+data.to_csv('formatted_phone_numbers.csv', index=False)
+# Error: phone numbers being calculated as formula in excel file
+
+data.to_excel('phone_num_formatting\\sample\\au-500-intl.xlsx', index=False)
+
+# export dataframe to a new csv file
+data.to_csv('phone_num_formatting\\sample\\au-500-intl.csv', index=False, quoting=csv.QUOTE_ALL)
+
+
 
 
