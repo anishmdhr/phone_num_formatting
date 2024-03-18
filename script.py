@@ -27,8 +27,8 @@ def check_format_and_convert(num):
 data['phone1_intl'] = phone_data['phone1'].apply(check_format_and_convert)
 data['phone2_intl'] = phone_data['phone2'].apply(check_format_and_convert)
 
-# Drop rows with invalid phone numbers
-data = data.dropna(subset=['phone1_intl', 'phone2_intl'])
+# Drop rows only when both 'phone1_intl' and 'phone2_intl' are invalid
+data = data.dropna(subset=['phone1_intl', 'phone2_intl'], how='all')
 
 # print(data.head())
 
