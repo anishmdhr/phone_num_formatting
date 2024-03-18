@@ -31,10 +31,12 @@ def check_format_and_convert(num):
     else:
         return None  # Invalid format, return None
 
-    
 # take each phone number and convert it to international format
 data['phone1_intl'] = phone_data['phone1'].apply(check_format_and_convert)
 data['phone2_intl'] = phone_data['phone2'].apply(check_format_and_convert)
+
+# Drop rows with invalid phone numbers
+data = data.dropna(subset=['phone1_intl', 'phone2_intl'])
 
 print(data.head())
 
